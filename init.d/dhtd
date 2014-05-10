@@ -1,0 +1,44 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          dhtd
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Required-Start:
+# Required-Stop:
+# Short-Description: Start dhtd at boot time
+# Description:       Reads temperature from DHT11/22 and provides it on unix socket
+### END INIT INFO
+
+DHT_PIN=25
+DHT_MODE=666
+DHT_SOCKET=/var/run/dhtd.socket
+DHT_PATH=/usr/local/sbin/dhtd
+
+[ -f /etc/dhtd.conf ] && . /etc/dhtd.conf
+[ -x $DHT_PATH ] || exit 1
+
+RETCODE=0
+
+case $1 in
+
+(start)	echo "starting dhtd"
+	launchtool -t dhtd -d \
+		−−forwarded−signals=1,15 -L --wait-times=1,1,3,3,10 \
+		--log-launchtool-output=syslog:dhtd-monitor,daemon,info \
+		--log-launchtool-errors=syslog:dhtd-monitor,daemon,info \
+		--log-child-output=syslog:dhtd,daemon,info \
+		--log-child-errors=syslog:dhtd,daemon,info \
+		-c "$DHT_PATH -m $DHT_MODE -s $DHT_SOCKET -P $DHT_PIN"
+	RETCODE=$?
+	;;
+
+(stop)	echo "stopping dhtd"
+	launchtool -t dhtd -k 15
+	RETCODE=$?
+	;;
+
+esac
+
+exit $RETCODE
+
