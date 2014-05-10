@@ -35,6 +35,9 @@ int main(int argc, char **argv) {
 	printf("Starting dhtd using pin %d, socket %s\n",
 			dht_pin, socket_path);
 
+	if (daemonize)
+		daemon(1, 0);
+
 	start_server(model, dht_pin);
 }
 

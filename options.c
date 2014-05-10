@@ -20,8 +20,9 @@
 #define OPT_DEBUG		'd'
 #define OPT_VERBOSE		'v'
 #define OPT_HELP		'h'
+#define OPT_DAEMONIZE		'D'
 
-#define OPTSTRING		"i:s:g:m:u:dvM:P:h"
+#define OPTSTRING		"i:s:g:m:u:dvM:P:hD"
 
 char	*socket_path  = DEFAULT_SOCKET_PATH;
 char	*socket_user  = DEFAULT_SOCKET_USER;
@@ -33,6 +34,7 @@ int	read_interval = DEFAULT_READ_INTERVAL;
 int	retry_interval = DEFAULT_RETRY_INTERVAL;
 int	debug         = 0;
 int	verbose       = 0;
+int	daemonize     = 0;
 
 uid_t name_to_uid(const char *name) {
 	struct passwd *pw;
@@ -97,6 +99,9 @@ void process_args(int argc, char **argv) {
 			case OPT_PIN:
 				dht_pin = atoi(optarg);
 				break;
+			case OPT_DAEMONIZE:
+				daemonize=1;
+				break;
 			case OPT_VERBOSE:
 				verbose=1;
 				break;
@@ -113,6 +118,7 @@ void process_args(int argc, char **argv) {
 		}
 	}
 
+	// debug implies verbose
 	if (debug) verbose=1;
 
 	if (dht_pin < 0) {

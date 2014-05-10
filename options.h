@@ -39,5 +39,6 @@ extern int	read_interval;
 extern int	retry_interval;
 extern int	debug;
 extern int 	verbose;
+extern int	daemonize;
 #endif
 
