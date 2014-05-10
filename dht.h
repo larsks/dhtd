@@ -8,6 +8,7 @@
 extern float temperature;
 extern float humidity;
 extern time_t last_update;
+extern time_t last_attempt;
 
 int readDHT(int type, int pin);
 #endif

@@ -25,6 +25,10 @@
 #define DEFAULT_MODEL "DHT22"
 #endif
 
+#ifndef DEFAULT_RETRY_INTERVAL
+#define DEFAULT_RETRY_INTERVAL 5
+#endif
+
 extern char	*socket_path;
 extern char	*socket_user;
 extern char	*socket_group;
@@ -32,6 +36,7 @@ extern char	*socket_mode;
 extern char	*dht_model;
 extern int	dht_pin;
 extern int	read_interval;
+extern int	retry_interval;
 extern int	debug;
 extern int 	verbose;
 #endif

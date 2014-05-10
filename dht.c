@@ -21,14 +21,16 @@
 float temperature  = 0;
 float humidity     = 0;
 time_t last_update = 0;
+time_t last_attempt = 0;
 
-int bits[250], data[100];
-int bitidx = 0;
+int data[100];
 
 int readDHT(int type, int pin) {
 	int counter = 0;
 	int laststate = HIGH;
 	int i=0, j=0;
+
+	last_attempt = time(NULL);
 
 	// Set GPIO pin to output
 	bcm2835_gpio_fsel(pin, BCM2835_GPIO_FSEL_OUTP);
@@ -58,7 +60,6 @@ int readDHT(int type, int pin) {
 		}
 		laststate = bcm2835_gpio_lev(pin);
 		if (counter == 1000) break;
-		bits[bitidx++] = counter;
 
 		if ((i>3) && (i%2 == 0)) {
 			// shove each bit into the storage bytes

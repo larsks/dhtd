@@ -21,12 +21,6 @@
 #include "options.h"
 #include "dht.h"
 
-#ifdef DEBUG
-time_t last_update = 0;
-float temperature  = 0.0;
-float humidity     = 0.0;
-#endif
-
 void start_server();
 
 int main(int argc, char **argv) {
@@ -133,6 +127,7 @@ void send_response(int sock) {
 void start_server(int model, int pin) {
 	int sock;
 	struct _ctx ctx = {NULL, 0};
+	int last_read_failed = 0;
 
 	if (!bcm2835_init()) {
 		fprintf(stderr, "failed to initialize bcm2835\n");
@@ -147,17 +142,21 @@ void start_server(int model, int pin) {
 	while (1) {
 		int res;
 		int i;
-		time_t now;
+		time_t now, delta;
 
 		res = poll(ctx.fdlist, ctx.nfds, 500);
 
 		now = time(NULL);
-		if (now - last_update >= read_interval) {
+		delta = now - last_attempt;
+
+		if ((last_read_failed && delta >= retry_interval) || (delta >= read_interval)) {
 			if (readDHT(model, pin)) {
+				last_read_failed = 0;
 				if (verbose)
 					fprintf(stderr, "successful sensor read at %d: %d %fC %f%%\n",
 							now, last_update, temperature, humidity);
 			} else {
+				last_read_failed = 1;
 				if (verbose)
 					fprintf(stderr, "failed sensor read at %d\n",
 							now);

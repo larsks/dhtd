@@ -10,6 +10,7 @@
 #include "options.h"
 
 #define OPT_READ_INTERVAL	'i'
+#define OPT_RETRY_INTERVAL	'r'
 #define OPT_SOCKET_PATH		's'
 #define OPT_SOCKET_GROUP	'g'
 #define OPT_SOCKET_MODE		'm'
@@ -29,6 +30,7 @@ char	*socket_mode  = DEFAULT_SOCKET_MODE;
 char	*dht_model    = DEFAULT_MODEL;
 int	dht_pin       = -1;
 int	read_interval = DEFAULT_READ_INTERVAL;
+int	retry_interval = DEFAULT_RETRY_INTERVAL;
 int	debug         = 0;
 int	verbose       = 0;
 
@@ -68,6 +70,9 @@ void process_args(int argc, char **argv) {
 		switch (c) {
 			case OPT_READ_INTERVAL:
 				read_interval = atoi(optarg);
+				break;
+			case OPT_RETRY_INTERVAL:
+				retry_interval = atoi(optarg);
 				break;
 			case OPT_SOCKET_PATH:
 				socket_path = strdup(optarg);
