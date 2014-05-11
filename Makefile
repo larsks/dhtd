@@ -22,5 +22,5 @@ install: all
 	$(INSTALL) -m 755 init.d/dhtd $(sysconfdir)/init.d/dhtd
 
 clean:
-	rm -f $(OBJS)
+	rm -f dhtd $(OBJS)
 
