@@ -40,5 +40,7 @@ extern int	retry_interval;
 extern int	debug;
 extern int 	verbose;
 extern int	daemonize;
+
+void process_args(int argc, char **argv);
 #endif
 

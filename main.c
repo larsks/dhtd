@@ -17,6 +17,7 @@
 #include <poll.h>
 #include <getopt.h>
 #include <arpa/inet.h>
+#include <bcm2835.h>
 
 #include "options.h"
 #include "dht.h"
